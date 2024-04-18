@@ -81,13 +81,6 @@ class SimpleSubstitution {
             }
         }
 
-        System.out.println("алфавит:");
-        System.out.println(ALPHABET_RUS);
-        System.out.println("Обработанный ключ:");
-        System.out.println(encryptedText);
-
-        System.out.println("результат:");
-
         return newEncryptedText;
     }
 
@@ -114,7 +107,7 @@ class SimpleSubstitution {
 
         for (int i = 0; i < encryptedText.length(); i++) { // дешифровка
             if (ALPHABET_RUS.contains(String.valueOf(encryptedText.charAt(i)))) {
-                decryptedText += ALPHABET_RUS.charAt(keyPhrase.indexOf(encryptedText.charAt(i)));
+                decryptedText += ALPHABET_RUS.charAt(newKeyPhrase.indexOf(encryptedText.charAt(i)));
             } else {
                 decryptedText += encryptedText.charAt(i);
             }
