@@ -22,14 +22,20 @@ public class Application {
                 "Покамест слуги управлялись и возились, господин отправился в общую залу. " +
                 "Какие бывают эти общие залы — всякий проезжающий знает очень хорошо.";
 
-        SimpleSubstitution simpleSubstitution = new SimpleSubstitution(keyPhrase, initialText);
-        var encrypt = simpleSubstitution.encrypt();
-        System.out.println("encrypt:");
-        System.out.println(encrypt);
+//        SimpleSubstitution simpleSubstitution = new SimpleSubstitution(keyPhrase, initialText);
+//        var encrypt = simpleSubstitution.encrypt();
+//        System.out.println("encrypt:");
+//        System.out.println(encrypt);
+//
+//        var decrypt = simpleSubstitution.decrypt(encrypt);
+//        System.out.println("decrypt:");
+//        System.out.println(decrypt);
 
-        var decrypt = simpleSubstitution.decrypt(encrypt);
-        System.out.println("decrypt:");
-        System.out.println(decrypt);
+        PermutationMethod permutationMethod = new PermutationMethod(keyPhrase);
+        var encrypt1 = permutationMethod.encrypt();
+        System.out.println("encrypt:");
+        System.out.println(encrypt1);
+
 
     }
 }

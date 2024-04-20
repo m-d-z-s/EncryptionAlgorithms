@@ -1,5 +1,7 @@
 package me.mdzs.encryptionalgorithms;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class SimpleSubstitution {
@@ -75,13 +77,22 @@ class SimpleSubstitution {
             }
         }
 
-        for (int i = 0; i < newEncryptedText.length(); i++) {
-            if ((i != 0) & (i % 5 == 0)){
-                newEncryptedText = newEncryptedText.substring(0, i) + " " + newEncryptedText.substring(i);
+        encryptedText = newEncryptedText;
+
+        //разбивка на строки по 5 символов
+        List<String> substrings = new ArrayList<>();
+        for (int i = 0; i < encryptedText.length(); i += 5) {
+            if (i + 5 < encryptedText.length()) {
+                substrings.add(encryptedText.substring(i, i + 5));
+            } else {
+                substrings.add(encryptedText.substring(i));
             }
         }
+        String result = String.join(" ", substrings);
 
-        return newEncryptedText;
+        encryptedText = result;
+
+        return encryptedText;
     }
 
     public String decrypt(String encryptedText) {
