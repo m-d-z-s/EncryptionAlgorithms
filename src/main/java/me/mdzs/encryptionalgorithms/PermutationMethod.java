@@ -76,7 +76,9 @@ public class PermutationMethod {
         for (int i = 0; i < length; i++) {
             List<Character> columns = new ArrayList<>();
             for (int j = 0; j < characters.length; j+=length) {
+                if (j+i < characters.length) {
                     columns.add(characters[j+i]);
+                }
             }
             matrix.add(columns);
         }
@@ -100,10 +102,15 @@ public class PermutationMethod {
         String partition = "";
 
         for (int priority : priorities) {
-            if (wrongColumns.contains(priority))  partition = encryptedText.substring(0, countRows - 1).concat(" ");
-            else partition = encryptedText.substring(0, countRows);
+            if (wrongColumns.contains(priority)) {
+                partition = encryptedText.substring(0, countRows - 1).concat(" ");
+                encryptedText = encryptedText.substring(countRows - 1);
+            }
+            else {
+                partition = encryptedText.substring(0, countRows);
+                encryptedText = encryptedText.substring(countRows);
+            }
 
-            encryptedText = encryptedText.replace(partition, "");
             var characters = partition.toCharArray();
             ArrayList<Character> column = new ArrayList<>();
             for (char character : characters) {
@@ -125,7 +132,7 @@ public class PermutationMethod {
     private List<Integer> getWrongColumnsIndexes(int length, int countRows) {
         ArrayList<Integer> indexes = new ArrayList<>();
         int maxIndex = keyWord.length() - 1;
-        int wrongCount = countRows * keyPhrase.length() % length;
+        int wrongCount = countRows * keyWord.length() % length;
         for (int i = 0; i < wrongCount; i++) {
             indexes.add(maxIndex--);
         }
