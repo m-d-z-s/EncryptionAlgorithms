@@ -34,24 +34,24 @@ public class Application {
 //        System.out.println("decrypt:");
 //        System.out.println(decrypt);
 
-        PermutationMethod permutationMethod = new PermutationMethod(keyPhrase);
-        var encrypt1 = permutationMethod.encrypt();
-        System.out.println("encrypt:");
-        System.out.println(encrypt1);
-
-
-        var decrypt1 = permutationMethod.decrypt(encrypt1);
-        System.out.println("decrypt:");
-        System.out.println(decrypt1);
-
-//        FactorizationCipher factorizationCipher = new FactorizationCipher(keyPhrase, initialText);
-//        var encrypt2 = factorizationCipher.encrypt();
+//        PermutationMethod permutationMethod = new PermutationMethod(keyPhrase);
+//        var encrypt1 = permutationMethod.encrypt();
 //        System.out.println("encrypt:");
-//        System.out.println(encrypt2);
-
-//        var decrypt2 = factorizationCipher.decrypt(encrypt2);
+//        System.out.println(encrypt1);
+//
+//
+//        var decrypt1 = permutationMethod.decrypt(encrypt1);
 //        System.out.println("decrypt:");
-//        System.out.println(decrypt2);
+//        System.out.println(decrypt1);
+
+        FactorizationCipher factorizationCipher = new FactorizationCipher(keyPhrase, initialText);
+        var encrypt2 = factorizationCipher.encrypt();
+        System.out.println("encrypt:");
+        System.out.println(encrypt2);
+
+        var decrypt2 = factorizationCipher.decrypt(encrypt2);
+        System.out.println("decrypt:");
+        System.out.println(decrypt2);
 
 
     }
