@@ -1,6 +1,9 @@
 package me.mdzs.encryptionalgorithms;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PermutationMethod {
@@ -9,82 +12,145 @@ public class PermutationMethod {
     private static String keyWord = "брусилова";
     private static String keyPhrase = "";
 
-    public PermutationMethod(String key){
+    List<Integer> priorities = getPriorities(keyWord);;
+
+    public PermutationMethod(String key) {
         keyPhrase = key;
+        priorities = getPriorities(keyWord);
     }
 
-    public String encrypt() {
-        String encryptedText = "";
-
-        // приоритеты букв в ключевом слове (по возрастанию)
-        int[] priorities = new int[keyWord.length()];
-        int index = 1;
+    private List<Integer> getPriorities(String keyWord) {
+        List<Integer> priorities = new ArrayList<>();
+        int index = 0;
         for (int i = 0; i < ALPHABET_RUS.length(); i++) {
             for (int j = 0; j < keyWord.length(); j++) {
                 if (ALPHABET_RUS.charAt(i) == keyWord.charAt(j)) {
-                    priorities[j] = index;
-                    index++;
+                    priorities.add(j);
+
                 }
             }
         }
+        return priorities;
+    }
+
+    private int countRows() {
+        int countRows = keyPhrase.length() % keyWord.length() ==0? keyPhrase.length() / keyWord.length() : keyPhrase.length() / keyWord.length() + 1;
+
+        return countRows;
+    }
+
+    public String encrypt() {
+        StringBuilder encryptedText = new StringBuilder();
 
         keyPhrase = keyPhrase.toLowerCase();
         keyPhrase = keyPhrase.replaceAll("[\\s\\n]", "");
 
-        int countRows = keyPhrase.length() % keyWord.length() == 0 ? keyPhrase.length() / keyWord.length() : keyPhrase.length() / keyWord.length() + 1;
-        char[][] matrix = new char[countRows][keyWord.length()];
+        int countRows = countRows();
 
-        int indexKeyPhrase = 0;
-        for (int i = 0; i < countRows; i++) {
-            for (int j = 0; j < keyWord.length(); j++) {
-                if (indexKeyPhrase < keyPhrase.length()) {
-                    matrix[i][j] = keyPhrase.charAt(indexKeyPhrase);
-                    indexKeyPhrase++;
-                } else {
-                    matrix[i][j] = ' ';
-                }
+        List<List<Character>> matrix = generateMatrix(keyPhrase, keyWord.length());
+
+
+        String message = makeMessage(matrix);
+
+        message = output(message);
+
+
+        return message;
+    }
+
+    private String makeMessage(List<List<Character>> matrix) {
+        StringBuilder message = new StringBuilder();
+        for (Integer priorities : priorities) {
+            var column = matrix.get(priorities);
+            for (int i = 0; i < column.size(); i++) {
+                message.append(column.get(i));
+            }
+        }
+        return message.toString();
+    }
+
+    private List<List<Character>> generateMatrix(String keyPhrase, int length) {
+        List<List<Character>> matrix = new ArrayList<>();
+        var characters = keyPhrase.toCharArray();
+
+        for (int i = 0; i < length; i++) {
+            List<Character> columns = new ArrayList<>();
+            for (int j = 0; j < characters.length; j+=length) {
+                    columns.add(characters[j+i]);
+            }
+            matrix.add(columns);
+        }
+        return matrix;
+    }
+
+    public String decrypt(@NotNull String encryptedText) {
+        StringBuilder decryptedText = new StringBuilder();
+        encryptedText = encryptedText.replace(" ", "");
+        int countRows = countRows();
+
+        var wrongColumns = getWrongColumnsIndexes(encryptedText.length(), countRows);
+
+        ArrayList<ArrayList<Character>> matrix = new ArrayList<>();
+        int counter = keyWord.length();
+        while (counter > 0) {
+            counter--;
+            matrix.add(new ArrayList<>());
+        }
+
+        String partition = "";
+
+        for (int priority : priorities) {
+            if (wrongColumns.contains(priority))  partition = encryptedText.substring(0, countRows - 1).concat(" ");
+            else partition = encryptedText.substring(0, countRows);
+
+            encryptedText = encryptedText.replace(partition, "");
+            var characters = partition.toCharArray();
+            ArrayList<Character> column = new ArrayList<>();
+            for (char character : characters) {
+                column.add(character);
+            }
+            matrix.set(priority, column);
+        }
+
+        for (int i = 0; i < matrix.get(0).size(); i++) {
+            for (ArrayList<Character> characters : matrix) {
+                decryptedText.append(characters.get(i));
             }
         }
 
-        String[] strings = new String[keyWord.length()];
+        return decryptedText.toString();
+    }
 
-        for (int i = 0; i < keyWord.length(); i++) {
-            strings[i] = "";
-            for (int j = 0; j < countRows; j++) {
-                strings[i] += matrix[j][i];
-            }
+    @NotNull
+    private List<Integer> getWrongColumnsIndexes(int length, int countRows) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+        int maxIndex = keyWord.length() - 1;
+        int wrongCount = countRows * keyPhrase.length() % length;
+        for (int i = 0; i < wrongCount; i++) {
+            indexes.add(maxIndex--);
         }
+        return indexes;
+    }
 
-
-        // сортировка массива строк по приоритетам букв в ключевом слове
-        for (int i = 0; i < keyWord.length(); i++) {
-            for (int j = 0; j < keyWord.length(); j++) {
-                if (priorities[j] == i + 1) {
-                    encryptedText += strings[j];
-                }
-            }
-        }
+    private String output(String text) {
         // удаление лишних пробелов
-        encryptedText = encryptedText.replaceAll("[\\s]", "");
+        text = text.replaceAll("[\\s]", "");
 
         //разбивка на строки по 5 символов
         List<String> substrings = new ArrayList<>();
-        for (int i = 0; i < encryptedText.length(); i += 5) {
-            if (i + 5 < encryptedText.length()) {
-                substrings.add(encryptedText.substring(i, i + 5));
+        for (int i = 0; i < text.length(); i += 5) {
+            if (i + 5 < text.length()) {
+                substrings.add(text.substring(i, i + 5));
             } else {
-                substrings.add(encryptedText.substring(i));
+                substrings.add(text.substring(i));
             }
         }
         String result = String.join(" ", substrings);
 
-        encryptedText = result;
+        text = result;
 
+        return text;
 
-        return encryptedText;
     }
 
-    public String decrypt(){
-        return "decrypt";
-    }
 }

@@ -9,8 +9,10 @@ public class Application {
 //        System.out.println("Введите ключевую фразу:");
 //        String keyPhrase = scanner1.nextLine();
 
+
         String keyPhrase = "Его пример другим наука;\n" +
                 "Но, боже мой, какая скука\n";
+
 
 //        Scanner scanner2 = new Scanner(System.in);
 //        System.out.println("Введите текст для шифрования:");
@@ -21,6 +23,7 @@ public class Application {
                 "так же замаслившимся, как блин, который удалось ему вытребовать у хозяина гостиницы. " +
                 "Покамест слуги управлялись и возились, господин отправился в общую залу. " +
                 "Какие бывают эти общие залы — всякий проезжающий знает очень хорошо.";
+
 
 //        SimpleSubstitution simpleSubstitution = new SimpleSubstitution(keyPhrase, initialText);
 //        var encrypt = simpleSubstitution.encrypt();
@@ -35,6 +38,20 @@ public class Application {
         var encrypt1 = permutationMethod.encrypt();
         System.out.println("encrypt:");
         System.out.println(encrypt1);
+
+
+        var decrypt1 = permutationMethod.decrypt(encrypt1);
+        System.out.println("decrypt:");
+        System.out.println(decrypt1);
+
+//        FactorizationCipher factorizationCipher = new FactorizationCipher(keyPhrase, initialText);
+//        var encrypt2 = factorizationCipher.encrypt();
+//        System.out.println("encrypt:");
+//        System.out.println(encrypt2);
+
+//        var decrypt2 = factorizationCipher.decrypt(encrypt2);
+//        System.out.println("decrypt:");
+//        System.out.println(decrypt2);
 
 
     }
