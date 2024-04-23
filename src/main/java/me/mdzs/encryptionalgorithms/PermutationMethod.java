@@ -43,7 +43,10 @@ public class PermutationMethod {
         StringBuilder encryptedText = new StringBuilder();
 
         keyPhrase = keyPhrase.toLowerCase();
-        keyPhrase = keyPhrase.replaceAll("[\\s\\n]", "");
+
+        keyPhrase = keyPhrase.replace(" ", "");
+
+        keyPhrase = keyPhrase.replace("\\n", "");
 
         int countRows = countRows();
 

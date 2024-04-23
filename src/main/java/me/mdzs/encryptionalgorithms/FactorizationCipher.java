@@ -95,19 +95,6 @@ public class FactorizationCipher {
         return coordinates;
     }
 
-//    @NotNull
-//    private List<Pair<Integer, Integer>> revertCoordinates(@NotNull ArrayList<List<Integer>> coordinates) {
-//        var revertedCoordinates = new ArrayList<Pair<Integer, Integer>>();
-//        var first = coordinates.subList(0, coordinates.size() / 2);
-//        var second = coordinates.subList(coordinates.size() / 2, coordinates.size());
-//
-//        for (int i = 0; i < first.size(); i++) {
-//            revertedCoordinates.add(new Pair<>(first.get(i).get(0), second.get(i).get(0)));
-//            revertedCoordinates.add(new Pair<>(first.get(i).get(1), second.get(i).get(1)));
-//        }
-//
-//        return revertedCoordinates;
-//    }
 
     @NotNull
     private List<Pair<Integer, Integer>> revertCoordinates(@NotNull ArrayList<List<Integer>> coordinates) {
@@ -118,7 +105,6 @@ public class FactorizationCipher {
         List<Integer> coordinatesLined = newCoordinatesLined(coordinates);
         for (int i = 0; i < coordinates.size() * 2; i++) {
             processedCoordinates.add(coordinatesLined.get(i));
-//                revertedCoordinates.add(new Pair<>(coordinatesLined.get(i), coordinatesLined.get(i + coordinates.size())));
         }
 
         first = processedCoordinates.subList(0, processedCoordinates.size() / 2);
@@ -194,7 +180,6 @@ public class FactorizationCipher {
         int step = 2;
         ArrayList<Pair<Integer, Integer>> newCoordinates = new ArrayList<>();
         for (int i = 0; i < coordinatesLined.size(); i += step) {
-            // newCoordinates.add(List.of(Integer.parseInt(String.valueOf(coordinatesLined.charAt(i))), Integer.parseInt(String.valueOf(coordinatesLined.charAt(i + step)))));
             newCoordinates.add(new Pair<>(coordinatesLined.get(i), coordinatesLined.get(i + 1)));
         }
 
